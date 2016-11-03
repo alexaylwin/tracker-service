@@ -1,0 +1,131 @@
+# Example YAML to get you started quickly.
+# Be aware that YAML has indentation based scoping.
+# Code completion support is available so start typing for available options.
+swagger: '2.0'
+
+# This is your document metadata
+info:
+  version: "0.0.1"
+  title: Activity-Tracker
+
+# Describe your paths here
+paths:
+  # This is a path endpoint. Change it.
+  /activities:
+    # This is a HTTP operation
+    get:
+      # Describe this verb here. Note: you can use markdown
+      description: |
+        Gets the list of defined activities for the user
+      # This is array of GET operation parameters:
+      parameters:
+        # An example parameter that is in query and is required
+        -
+          name: user
+          in: query
+          description: User ID for request
+          required: true
+          type: string
+      # Expected responses for this operation:
+      responses:
+        # Response code
+        200:
+          description: Successful response
+          # A schema describing your response object.
+          # Use JSON Schema format
+          schema:
+            title: ListOfActivities
+            type: array
+            items:
+              title: Activity
+              type: object
+              properties:
+                name:
+                  type: string
+                id:
+                  type: number
+  
+  /recent-activities:
+    get:
+      description: |
+        Gets a set of recent activities performed by
+        the user
+      parameters:
+        -
+          name: user
+          in: query
+          description: User ID for request
+          required: true
+          type: string
+          
+        -
+          name: startDate
+          in: query
+          description: Starting date for activity records to retrieve
+          required: false
+          type: string
+          
+        -
+          name: endDate
+          in: query
+          description: Ending date for activity records to retrieve
+          required: false
+          type: string              
+          
+      responses:
+        200:
+          description: Successful response
+          
+          schema:
+            title: ListOfActivityRecords
+            type: array
+            items:
+              title: ActivityRecord
+              type: object
+              properties:
+                startTime:
+                  type: string
+                endTime:
+                  type: string
+                duration:
+                  type: number
+                activityId:
+                  type: number
+                  
+    put:
+      description: |
+        Inserts a new activity record for this user
+      parameters:
+        -
+          name: user
+          in: query
+          description: User ID for request
+          required: true
+          type: string
+          
+        -
+          name: startTime
+          in: query
+          description: Start date/time of the activity
+          required: true
+          type: string
+          
+        -
+          name: endTime
+          in: query
+          description: End date/time of the activity
+          required: true
+          type: string       
+          
+        -
+          name: activityId
+          in: query
+          description: The activity id
+          required: true
+          type: number
+      
+      responses:
+        200:
+          description: Successful response
+          
+                
