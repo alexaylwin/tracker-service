@@ -10,6 +10,7 @@ GOTO complete
 @echo Pushing to local
 copy activities.php C:\wamp64\www\tracker\ /Y
 copy recent-activities.php C:\wamp64\www\tracker\ /Y
+copy recorded-activities.php C:\wamp64\www\tracker\ /Y
 xcopy api C:\wamp64\www\tracker\api\ /Y /E
 
 :complete

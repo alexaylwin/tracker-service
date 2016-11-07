@@ -91,7 +91,8 @@ paths:
                   type: number
                 activityId:
                   type: number
-                  
+  
+  /recorded-activities:                
     put:
       description: |
         Inserts a new activity record for this user
@@ -127,5 +128,3 @@ paths:
       responses:
         200:
           description: Successful response
-          
-                
