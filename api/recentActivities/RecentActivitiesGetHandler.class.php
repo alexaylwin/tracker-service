@@ -13,6 +13,7 @@ class RecentActivitiesGetHandler {
 
 		if(!isset($request[0]) || empty($request[0])) {
 			$response->setStatusHeader(500);
+			$response->setBody("UserID was empty");
 			return $response;
 		} 
 		//Match the user ID to their activities
