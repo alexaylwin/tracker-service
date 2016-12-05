@@ -14,6 +14,7 @@ class RecordedActivitiesPutHandler {
 
 		//TODO: refactor this into generic DAO
 		$db = new \mysqli('127.0.0.1', 'root', '', 'tracker');
+		//$db = new \mysqli('localhost', 'bacmsca_tracker', 'September12', 'bacmsca_tracker');
 
 		if($db->connect_errno > 0) {
 			$response->setStatusHeader(500);
@@ -29,8 +30,8 @@ class RecordedActivitiesPutHandler {
 			return $response;
 		}
 		$userid = $request[0];
-		$endtime = new \DateTime($request[1]);
-		$starttime = new \DateTime($request[2]);
+		$starttime = new \DateTime($request[1]);		
+		$endtime = new \DateTime($request[2]);	
 		$activityid = $request[3];		
 		
 		//incoming datetime format is:

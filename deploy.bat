@@ -2,8 +2,10 @@
 @echo Building at %time%
 IF "%1"=="local" GOTO local
 @echo Pushing to remote
-rem copy activities.php C:\wamp64\www\tracker\ /Y
-rem xcopy api C:\wamp64\www\tracker\api\ /Y /E
+copy activities.php Z:\tracker-service\ /Y
+copy recent-activities.php Z:\tracker-service\ /Y
+copy recorded-activities.php Z:\tracker-service\ /Y
+xcopy api Z:\tracker-service\api\ /Y /E
 GOTO complete
 
 :local

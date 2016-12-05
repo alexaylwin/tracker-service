@@ -16,6 +16,7 @@ switch ($method) {
 <?php
 http_response_code($response->getStatusHeader());
 header('Access-Control-Allow-Origin: *'); 
+header('Access-Control-Allow-Methods: GET, POST, PUT, OPTIONS');
 header('Content-type: application/json');
 echo $response->getBody();
 ?>

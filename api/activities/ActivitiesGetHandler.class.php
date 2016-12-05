@@ -18,7 +18,19 @@ class ActivitiesGetHandler {
 		//Match the user ID to their activities
 		if($request[0] == '1') {
 			$response->setStatusHeader(200);
-			$response->setBody('[{"id": "1", "name":"Work"},{"id": "2", "name":"Fun"},{"id": "3", "name":"Exercise"},{"id": "4", "name":"Household"}]');
+			$responseString = <<<EOR
+[
+	{"id": "1", "name":"Work - RBC"},
+	{"id": "2", "name":"Work - EMR"},
+	{"id": "3", "name":"Fun - Games"},
+	{"id": "4", "name":"Fun - TV"},
+	{"id": "5", "name":"Fun - Other"},
+	{"id": "6", "name":"Exercise"},
+	{"id": "7", "name":"Household - Rookie"},
+	{"id": "7", "name":"Household - Other"}
+]			
+EOR;
+			$response->setBody($responseString);
 		} else {
 			$response->setStatusHeader(200);
 			$response->setBody('[{"id": "1", "name":"Default Activity1"},{"id": "2", "name":"Default Activity2"},{"id": "3", "name":"Default Activity3"},{"id": "4", "name":"Default Activity4"}]');
