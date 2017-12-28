@@ -17,8 +17,9 @@ import com.cloudant.client.api.ClientBuilder;
 import com.cloudant.client.api.CloudantClient;
 import com.cloudant.client.api.Database;
 import com.google.gson.GsonBuilder;
-import com.nova.services.model.CompletedActivity;
+import com.nova.services.model.ActivityRecord;
 import com.nova.services.model.gson.User;
+import com.nova.services.model.Activity;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,7 +46,11 @@ public class ActivityDao {
 						.build();
 	}
 	
-	public List<CompletedActivity> getActivities(LocalDateTime startTime, LocalDateTime endTime, String userId) { 
+	public List<Activity> getActivities(String userId) {
+		return null;
+	}
+	
+	public List<ActivityRecord> getRecordedActivities(LocalDateTime startTime, LocalDateTime endTime, String userId) { 
 		Database db = this.client.database("tracker", false);
 		User user = db.findByIndex("{\"selector\":{\"user_id\":1}}", User.class).get(0);
 
@@ -56,18 +61,18 @@ public class ActivityDao {
 		 * 
 		 * Implement caching for the user object returned from the database
 		 */
-		
-		List<com.nova.services.model.CompletedActivity> activityList = user.getCompleted_activities().stream().map(gu -> {
+
+		List<com.nova.services.model.ActivityRecord> activityList = user.getCompleted_activities().stream().map(gu -> {
 			LocalDateTime start;
 			LocalDateTime end;
 			start = LocalDateTime.parse(gu.getStart_time().trim(), dateFormatter);
 			end = LocalDateTime.parse(gu.getEnd_time(), dateFormatter);
-			return new com.nova.services.model.CompletedActivity(Integer.valueOf(gu.getId()), start, end);
+			return new com.nova.services.model.ActivityRecord(Integer.valueOf(gu.getId()), start, end);
 		}).collect(Collectors.toList());
 		
 		activityList.stream().forEach(ca -> {System.out.println(ca.getActivityId());});
 		
-		return activityList;		
+		return activityList;	
 		
 	}
 

@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 @Data
-public class CompletedActivity {
+public class ActivityRecord {
 
 	private int activityId;
 	
@@ -24,7 +24,7 @@ public class CompletedActivity {
 	@JsonProperty
 	private long duration;
 	
-	public CompletedActivity(int activityId, LocalDateTime startTime, LocalDateTime endTime) {
+	public ActivityRecord(int activityId, LocalDateTime startTime, LocalDateTime endTime) {
 		this.activityId = activityId;
 		this.startTime = startTime;
 		this.endTime = endTime;
@@ -32,6 +32,6 @@ public class CompletedActivity {
 		this.duration = tempDuration.getSeconds();
 	}
 	
-	public CompletedActivity() {};
+	public ActivityRecord() {};
 	
 }

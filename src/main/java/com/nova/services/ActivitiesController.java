@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.nova.services.dao.ActivityDao;
-import com.nova.services.model.CompletedActivity;
+import com.nova.services.model.ActivityRecord;
 
 @RestController
 public class ActivitiesController {
@@ -18,21 +18,20 @@ public class ActivitiesController {
 	@Autowired
 	ActivityDao activityDao;
 	
-	@RequestMapping("/activities")
-	public List<CompletedActivity> getActivities(@RequestParam(value="userid") String userId) {
-		
-		return activityDao.getActivities(null, null, userId);
+	@RequestMapping("/recorded-activities")
+	public List<ActivityRecord> getActivities(@RequestParam(value="userid") String userId) {
+		return activityDao.getRecordedActivities(null, null, userId);
 	}
 	
 	@RequestMapping("/recent-activities")
-	public List<CompletedActivity> getRecentActivities(@RequestParam(value="userid") String userId) {
+	public List<ActivityRecord> getRecentActivities(@RequestParam(value="userid") String userId) {
 		LocalDateTime tmp = LocalDateTime.now();
 		tmp = tmp.minusWeeks(4);
-		return activityDao.getActivities(tmp, null, userId);
+		return activityDao.getRecordedActivities(tmp, null, userId);
 	}
 	
 	@RequestMapping(value="/activity", method=RequestMethod.PUT)
-	public CompletedActivity addActivity(@RequestParam(value="activityid") int activityId) {
+	public ActivityRecord addActivity(@RequestParam(value="activityid") int activityId) {
 		
 		return null;
 	}
