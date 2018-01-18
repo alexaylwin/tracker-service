@@ -1,4 +1,4 @@
-package com.nova.services.model.gson;
+package com.nova.services.model.cloudant;
 
 import lombok.Data;
 

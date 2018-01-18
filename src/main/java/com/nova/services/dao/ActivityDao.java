@@ -16,10 +16,8 @@ import org.springframework.stereotype.Component;
 import com.cloudant.client.api.ClientBuilder;
 import com.cloudant.client.api.CloudantClient;
 import com.cloudant.client.api.Database;
-import com.google.gson.GsonBuilder;
 import com.nova.services.model.ActivityRecord;
-import com.nova.services.model.gson.User;
-import com.nova.services.model.Activity;
+import com.nova.services.model.User;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,7 +33,7 @@ public class ActivityDao {
 	private static final String CLOUDANT_DB = "tracker";
 	
 	
-	private CloudantClient client;
+	CloudantClient client;
 	private static DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"); 
 	
 	@PostConstruct
@@ -46,13 +44,9 @@ public class ActivityDao {
 						.build();
 	}
 	
-	public List<Activity> getActivities(String userId) {
-		return null;
-	}
-	
-	public List<ActivityRecord> getRecordedActivities(LocalDateTime startTime, LocalDateTime endTime, String userId) { 
+	public List<ActivityRecord> getActivities(LocalDateTime startTime, LocalDateTime endTime, int userId) { 
 		Database db = this.client.database("tracker", false);
-		User user = db.findByIndex("{\"selector\":{\"user_id\":1}}", User.class).get(0);
+		com.nova.services.model.cloudant.User user = db.findByIndex("{\"selector\":{\"user_id\":1}}", com.nova.services.model.cloudant.User.class).get(0);
 
 		/*
 		 * TODO:
@@ -61,8 +55,8 @@ public class ActivityDao {
 		 * 
 		 * Implement caching for the user object returned from the database
 		 */
-
-		List<com.nova.services.model.ActivityRecord> activityList = user.getCompleted_activities().stream().map(gu -> {
+		System.out.println(user.toString());
+		List<ActivityRecord> activityList = user.getRecorded_activities().stream().map(gu -> {
 			LocalDateTime start;
 			LocalDateTime end;
 			start = LocalDateTime.parse(gu.getStart_time().trim(), dateFormatter);
@@ -72,7 +66,7 @@ public class ActivityDao {
 		
 		activityList.stream().forEach(ca -> {System.out.println(ca.getActivityId());});
 		
-		return activityList;	
+		return activityList;		
 		
 	}
 
