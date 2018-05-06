@@ -38,7 +38,7 @@ public class ActivityDaoTests {
 	public void testGetActivityList() {
 		
 		List<ActivityRecord> recordedActivities = new ArrayList<ActivityRecord>();
-		recordedActivities = testDao.getActivities(LocalDateTime.MIN, LocalDateTime.now(), ALEX_ID);
+		recordedActivities = testDao.getRecordedActivities(LocalDateTime.MIN, LocalDateTime.now(), ALEX_ID);
 		assertTrue(recordedActivities.size() > 0);
 		
 	}

@@ -4,6 +4,9 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -19,20 +22,20 @@ public class ActivitiesController {
 	@Autowired
 	ActivityDao activityDao;
 	
-	@RequestMapping("/activities")
+	@CrossOrigin(origins="http://localhost:4200")
+	@GetMapping("/tracker/api/activities")
 	public List<Activity> getActivities(@RequestParam(value="userid") int userId) {
 		
 		return activityDao.getActivities(userId);
 	}
 	
-	@RequestMapping("/activities/record")
+	@CrossOrigin(origins="http://localhost:4200")
+	@GetMapping("/tracker/api/activities/record")
 	public List<ActivityRecord> getActivityRecord(@RequestParam(value="userid") int userId) {
-		LocalDateTime tmp = LocalDateTime.now();
-		tmp = tmp.minusWeeks(4);
-		return activityDao.getRecordedActivities(tmp, null, userId);
+		return activityDao.getRecordedActivities(null, null, userId);
 	}
 	
-	@RequestMapping(value="/activity/record", method=RequestMethod.POST)
+	@PostMapping(value="/activity/record")
 	public ActivityRecord addActivityRecord(@RequestParam(value="activityid") int activityId) {
 		
 		return null;
