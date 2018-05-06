@@ -25,7 +25,7 @@ tags:
 schemes:
 - "http"
 paths:
-  /activities/record/{userid}:
+  /activities/record/:
     get:
       tags:
       - "activities"
@@ -36,7 +36,7 @@ paths:
       - "application/json"
       parameters:
       - name: "userid"
-        in: "path"
+        in: "query"
         description: "The user id for whom to retrieve activties"
         required: true
         type: "integer"
@@ -62,7 +62,7 @@ paths:
       - "application/json"
       parameters:
       - name: "userid"
-        in: "path"
+        in: "query"
         description: "The user id"
         required: true
         type: "integer"
@@ -76,7 +76,7 @@ paths:
         200:
           description: "Success"
       x-swagger-router-controller: "Activities"
-  /activities/{userid}:
+  /activities/:
     get:
       tags:
       - "activities"
@@ -87,7 +87,7 @@ paths:
       - "application/json"
       parameters:
       - name: "userid"
-        in: "path"
+        in: "query"
         description: "The user id"
         required: true
         type: "integer"
@@ -109,7 +109,7 @@ paths:
       - "application/json"
       parameters:
       - name: "userid"
-        in: "path"
+        in: "query"
         description: "The user id"
         required: true
         type: "integer"

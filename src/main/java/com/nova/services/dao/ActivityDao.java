@@ -16,6 +16,7 @@ import org.springframework.stereotype.Component;
 import com.cloudant.client.api.ClientBuilder;
 import com.cloudant.client.api.CloudantClient;
 import com.cloudant.client.api.Database;
+import com.nova.services.model.Activity;
 import com.nova.services.model.ActivityRecord;
 import com.nova.services.model.User;
 
@@ -44,19 +45,19 @@ public class ActivityDao {
 						.build();
 	}
 	
-	public List<ActivityRecord> getActivities(LocalDateTime startTime, LocalDateTime endTime, int userId) { 
+	public List<ActivityRecord> getRecordedActivities(LocalDateTime startTime, LocalDateTime endTime, int userId) { 
 		Database db = this.client.database("tracker", false);
 		com.nova.services.model.cloudant.User user = db.findByIndex("{\"selector\":{\"user_id\":1}}", com.nova.services.model.cloudant.User.class).get(0);
 
 		/*
 		 * TODO:
-		 * Convert the Gson CompletedActivities object into a business CompletedActivity object
+		 * Convert the Gson CompletedActivities object into a business ActivityRecord object
 		 * Only return the activities that fall within the start and end time
 		 * 
 		 * Implement caching for the user object returned from the database
 		 */
 		System.out.println(user.toString());
-		List<ActivityRecord> activityList = user.getRecorded_activities().stream().map(gu -> {
+		List<ActivityRecord> activityRecordList = user.getRecorded_activities().stream().map(gu -> {
 			LocalDateTime start;
 			LocalDateTime end;
 			start = LocalDateTime.parse(gu.getStart_time().trim(), dateFormatter);
@@ -64,10 +65,33 @@ public class ActivityDao {
 			return new com.nova.services.model.ActivityRecord(Integer.valueOf(gu.getId()), start, end);
 		}).collect(Collectors.toList());
 		
-		activityList.stream().forEach(ca -> {System.out.println(ca.getActivityId());});
+		activityRecordList.stream().forEach(ca -> {System.out.println(ca.getActivityId());});
 		
-		return activityList;		
+		return activityRecordList;		
 		
+	}
+	
+	public List<Activity> getActivities(int userid) {
+		Database db = this.client.database("tracker", false);
+		com.nova.services.model.cloudant.User user = db.findByIndex("{\"selector\":{\"user_id\":1}}", com.nova.services.model.cloudant.User.class).get(0);
+		System.out.println(user.toString());
+		
+		List<Activity> activityList = user.getActivity_list().stream().map(cloudantActivity -> {
+			Long id = 0l;
+			int order = 0;
+			String name = "";
+			try { 
+			id = Long.parseLong(cloudantActivity.getId());
+			order = Integer.parseInt(cloudantActivity.getActivity_order());
+			} catch (NumberFormatException e) {
+				System.err.printf("Could not convert id or sort-order: [%s] [%s] \n", cloudantActivity.getId(), cloudantActivity.getActivity_order());
+			}
+			name = cloudantActivity.getActivity_name();
+			
+			return new Activity(id, name, order);
+		}).collect(Collectors.toList());
+		
+		return activityList;
 	}
 
 }
