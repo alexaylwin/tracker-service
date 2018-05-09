@@ -1,0 +1,154 @@
+---
+swagger: "2.0"
+info:
+  description: "Tracker API"
+  version: "1.0.0"
+  title: "Tracker API"
+  contact:
+    email: "alex@alexaylwin.com"
+  license:
+    name: "Apache 2.0"
+    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+host: "localhost"
+basePath: "/tracker/api"
+tags:
+- name: "activities"
+  description: "Activity related APIs"
+  externalDocs:
+    description: "Find out more"
+    url: "http://github.com/alexaylwin/tracker"
+- name: "user"
+  description: "Operations about user"
+  externalDocs:
+    description: "Find out more about our store"
+    url: "http://github.com/alexaylwin/tracker"
+schemes:
+- "http"
+paths:
+  /activities/record/:
+    get:
+      tags:
+      - "activities"
+      summary: "Get a users recent activities"
+      description: ""
+      operationId: "getRecordedActivities"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "userid"
+        in: "query"
+        description: "The user id for whom to retrieve activties"
+        required: true
+        type: "integer"
+      responses:
+        200:
+          description: "A list of recently completed activities"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/ActivityRecord"
+        405:
+          description: "Invalid input"
+      x-swagger-router-controller: "Activities"
+    post:
+      tags:
+      - "activities"
+      summary: "Record a completed activity"
+      description: "Record a completed activity for this user"
+      operationId: "addRecordedActivity"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "userid"
+        in: "query"
+        description: "The user id"
+        required: true
+        type: "integer"
+      - in: "body"
+        name: "activityRecord"
+        description: "The activity to add"
+        required: true
+        schema:
+          $ref: "#/definitions/ActivityRecord"
+      responses:
+        200:
+          description: "Success"
+      x-swagger-router-controller: "Activities"
+  /activities/:
+    get:
+      tags:
+      - "activities"
+      summary: "Retrieve a user's activity list"
+      description: ""
+      operationId: "getActivities"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "userid"
+        in: "query"
+        description: "The user id"
+        required: true
+        type: "integer"
+      responses:
+        200:
+          description: "Success"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Activity"
+      x-swagger-router-controller: "Activities"
+    post:
+      tags:
+      - "activities"
+      summary: "Add an activity to a users activity list"
+      description: "Add a new activity to the user activity list"
+      operationId: "addActivity"
+      produces: 
+      - "application/json"
+      parameters:
+      - name: "userid"
+        in: "query"
+        description: "The user id"
+        required: true
+        type: "integer"
+      - name: "activity"
+        in: "body"
+        description: "The activity to add"
+        required: true
+        schema:
+          $ref: "#/definitions/Activity"
+      responses:
+        200:
+          description: "Success"
+        
+definitions:
+  Activity:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        format: "int64"
+      name:
+        type: "string"
+  User:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        format: "int64"
+      name:
+        type: "string"
+  ActivityRecord:
+    type: "object"
+    properties:
+      startTime:
+        type: "string"
+      endTime:
+        type: "string"
+      activityId:
+        type: "integer"
+externalDocs:
+  description: "Find out more about Swagger"
+  url: "http://swagger.io"
