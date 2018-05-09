@@ -94,12 +94,13 @@ public class ActivityDao {
 		com.nova.services.model.cloudant.User user = db.findByIndex("{\"selector\":{\"user_id\":1}}", com.nova.services.model.cloudant.User.class).get(0);
 		com.nova.services.model.cloudant.ActivityRecord record = 
 				new com.nova.services.model.cloudant.ActivityRecord(
-				Integer.toString(activityRecord.getActivityId()),
-				activityRecord.getStartTime().format(dateFormatter),
-				activityRecord.getEndTime().format(dateFormatter));
+						Integer.toString(activityRecord.getActivityId()),
+						activityRecord.getStartTime().format(dateFormatter),
+						activityRecord.getEndTime().format(dateFormatter)
+					);
 		user.getRecorded_activities().add(record);
 		Response resp = db.update(user);
-		return (resp.getStatusCode() == 200);
+		return (resp.getError().isEmpty());
 	}
 
 }

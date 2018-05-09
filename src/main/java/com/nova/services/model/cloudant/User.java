@@ -9,6 +9,8 @@ import lombok.Data;
 
 @Data
 public class User {
+	private String _id;
+	private String _rev;
 	private int id;
 	private int user_id;
 	private String user_name;
