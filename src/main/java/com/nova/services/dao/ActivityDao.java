@@ -11,6 +11,7 @@ import java.util.stream.Collectors;
 import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import com.cloudant.client.api.ClientBuilder;
@@ -30,8 +31,13 @@ public class ActivityDao {
 	private static final Logger logger = LoggerFactory.getLogger(ActivityDao.class);
 	
 	private static final String CLOUDANT_URL = "https://d37dd7ea-611f-4601-b63a-6ea1832af765-bluemix.cloudant.com";
-	private static final String CLOUDANT_USER = "d37dd7ea-611f-4601-b63a-6ea1832af765-bluemix";
-	private static final String CLOUDANT_PASS = "31b843b97d5299885254da9722dab071aefee2a98bc7c56257b99f119b9256cf";
+	
+	//@Value("${cloudant.username}")
+	private String CLOUDANT_USER = "d37dd7ea-611f-4601-b63a-6ea1832af765-bluemix";
+	
+	//@Value("${cloudant.password}")
+	private String CLOUDANT_PASS = "31b843b97d5299885254da9722dab071aefee2a98bc7c56257b99f119b9256cf";
+	
 	private static final String CLOUDANT_DB = "tracker";
 	
 	CloudantClient client;
@@ -41,6 +47,7 @@ public class ActivityDao {
 	
 	@PostConstruct
 	public void postConstruct() throws MalformedURLException {
+		System.out.println(CLOUDANT_USER);
 		this.client = ClientBuilder.url(new URL(CLOUDANT_URL))
 						.username(CLOUDANT_USER)
 						.password(CLOUDANT_PASS)
