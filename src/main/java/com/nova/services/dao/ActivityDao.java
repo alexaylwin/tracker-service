@@ -34,7 +34,8 @@ public class ActivityDao {
 	@Autowired
 	CredentialConfig credentials;
 	
-	private static final String CLOUDANT_URL = "https://d37dd7ea-611f-4601-b63a-6ea1832af765-bluemix.cloudant.com";
+	@Value("${cloudant.url}")
+	private String CLOUDANT_URL;
 	
 	private static final String CLOUDANT_DB = "tracker";
 	
@@ -45,9 +46,10 @@ public class ActivityDao {
 	
 	@PostConstruct
 	public void postConstruct() throws MalformedURLException {
+		System.out.println("Creds:" + credentials.getCloudantUsername() + ":" + credentials.getCloudantPassword());
 		this.client = ClientBuilder.url(new URL(CLOUDANT_URL))
 						.username(credentials.getCloudantUsername())
-						.password(credentials.getCloudantUsername())
+						.password(credentials.getCloudantPassword())
 						.build();
 	}
 	

@@ -29,20 +29,20 @@ public class SecurityHandlerInterceptor extends HandlerInterceptorAdapter {
 			HttpServletResponse response,
 			Object handler) throws Exception {
 		
-		System.err.println("Handling request - " + request);
-		
 		if(request.getCookies() == null) {
 			return false;
 		}
 		
 		for(Cookie c : request.getCookies()) {
-			if(c.getName().equals("auth")) {
-				System.err.println("auth cookie value [" + c.getValue() + "]");
+			if(c.getName().equals("t_auth")) {
+				System.out.println("t_auth cookie value [" + c.getValue() + "]");
 				if(c.getValue().equals(credentials.getUserSecret())) {
 					return true;
 				}
+				
 			}
 		}
+		response.setStatus(401);
 		return false;
 	}
 
