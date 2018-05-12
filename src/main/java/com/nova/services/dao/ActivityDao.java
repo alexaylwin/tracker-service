@@ -18,6 +18,7 @@ import com.cloudant.client.api.ClientBuilder;
 import com.cloudant.client.api.CloudantClient;
 import com.cloudant.client.api.Database;
 import com.cloudant.client.api.model.Response;
+import com.nova.services.config.CredentialConfig;
 import com.nova.services.model.Activity;
 import com.nova.services.model.ActivityRecord;
 import com.nova.services.model.User;
@@ -30,13 +31,10 @@ public class ActivityDao {
 	
 	private static final Logger logger = LoggerFactory.getLogger(ActivityDao.class);
 	
+	@Autowired
+	CredentialConfig credentials;
+	
 	private static final String CLOUDANT_URL = "https://d37dd7ea-611f-4601-b63a-6ea1832af765-bluemix.cloudant.com";
-	
-	//@Value("${cloudant.username}")
-	private String CLOUDANT_USER = "d37dd7ea-611f-4601-b63a-6ea1832af765-bluemix";
-	
-	//@Value("${cloudant.password}")
-	private String CLOUDANT_PASS = "31b843b97d5299885254da9722dab071aefee2a98bc7c56257b99f119b9256cf";
 	
 	private static final String CLOUDANT_DB = "tracker";
 	
@@ -47,15 +45,14 @@ public class ActivityDao {
 	
 	@PostConstruct
 	public void postConstruct() throws MalformedURLException {
-		System.out.println(CLOUDANT_USER);
 		this.client = ClientBuilder.url(new URL(CLOUDANT_URL))
-						.username(CLOUDANT_USER)
-						.password(CLOUDANT_PASS)
+						.username(credentials.getCloudantUsername())
+						.password(credentials.getCloudantUsername())
 						.build();
 	}
 	
 	public List<ActivityRecord> getRecordedActivities(LocalDateTime startTime, LocalDateTime endTime, int userId) { 
-		Database db = this.client.database("tracker", false);
+		Database db = this.client.database(CLOUDANT_DB, false);
 		com.nova.services.model.cloudant.User user = db.findByIndex("{\"selector\":{\"user_id\":1}}", com.nova.services.model.cloudant.User.class).get(0);
 
 		System.out.println(user.toString());
@@ -74,7 +71,7 @@ public class ActivityDao {
 	}
 	
 	public List<Activity> getActivities(int userid) {
-		Database db = this.client.database("tracker", false);
+		Database db = this.client.database(CLOUDANT_DB, false);
 		com.nova.services.model.cloudant.User user = db.findByIndex("{\"selector\":{\"user_id\":1}}", com.nova.services.model.cloudant.User.class).get(0);
 		System.out.println(user.toString());
 		
@@ -97,7 +94,7 @@ public class ActivityDao {
 	}
 	
 	public boolean addActivityRecord(int userid, ActivityRecord activityRecord) {
-		Database db = this.client.database("tracker", false);
+		Database db = this.client.database(CLOUDANT_DB, false);
 		com.nova.services.model.cloudant.User user = db.findByIndex("{\"selector\":{\"user_id\":1}}", com.nova.services.model.cloudant.User.class).get(0);
 		com.nova.services.model.cloudant.ActivityRecord record = 
 				new com.nova.services.model.cloudant.ActivityRecord(
