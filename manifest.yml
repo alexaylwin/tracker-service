@@ -1,7 +1,7 @@
 applications:
   - name: tracker-service
     buildpack: https://github.com/cloudfoundry/java-buildpack.git
-    memory: 256M
+    memory: 200M
     path: target/TrackerService.jar
     instances: 1
    

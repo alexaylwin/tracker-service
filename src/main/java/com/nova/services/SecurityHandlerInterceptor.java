@@ -1,5 +1,7 @@
 package com.nova.services;
 
+import java.util.Collections;
+
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -11,10 +13,10 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import com.nova.services.config.CredentialConfig;
 
-@Component
+//@Component
 public class SecurityHandlerInterceptor extends HandlerInterceptorAdapter {
 	
-	@Autowired
+//	@Autowired
 	CredentialConfig credentials;
 	
 	/*
@@ -29,7 +31,15 @@ public class SecurityHandlerInterceptor extends HandlerInterceptorAdapter {
 			HttpServletResponse response,
 			Object handler) throws Exception {
 		
+//		return true;
+		for(String s: Collections.list(request.getHeaderNames())) {
+			System.err.println(s + " -> " + request.getHeader(s));
+		}
 		if(request.getCookies() == null) {
+			response.setStatus(403);
+			response.setHeader("Access-Control-Allow-Origin", "http://localhost:4200");
+			response.setHeader("Access-Control-Allow-Credentials", "true");
+			response.setHeader("Access-Control-Allow-Headers", "*");
 			return false;
 		}
 		
@@ -42,8 +52,12 @@ public class SecurityHandlerInterceptor extends HandlerInterceptorAdapter {
 				
 			}
 		}
-		response.setStatus(401);
+		response.setStatus(403);
+		response.setHeader("Access-Control-Allow-Origin", "http://localhost:4200");
+		response.setHeader("Access-Control-Allow-Credentials", "true");
+		response.setHeader("Access-Control-Allow-Headers", "*");
 		return false;
+	
 	}
 
 }

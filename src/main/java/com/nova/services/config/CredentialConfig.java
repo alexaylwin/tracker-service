@@ -17,6 +17,20 @@ public class CredentialConfig {
 	@Value("${user.secret}")
 	private String userSecret;
 	
+	@Value("${user.username}")
+	private String username;
+	
+	public String getUsername() {
+		return username;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	@Value("${user.password}")
+	private String password;
+	
 	public String getCloudantUsername() {
 		return this.cloudantUsername;
 	}

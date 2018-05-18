@@ -18,7 +18,10 @@ import com.nova.services.model.Activity;
 import com.nova.services.model.ActivityRecord;
 
 @RestController
-@CrossOrigin
+//@CrossOrigin(origins = "http://tracker.alexaylwin.com", 
+//	methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.OPTIONS}, 
+//	allowCredentials="true", 
+//	allowedHeaders="*")
 public class ActivitiesController {
 
 	@Autowired
