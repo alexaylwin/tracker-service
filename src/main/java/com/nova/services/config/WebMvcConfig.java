@@ -13,7 +13,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
 	    .allowCredentials(true)
 	    .allowedOrigins("http://localhost:4200")
 	    .allowedHeaders("*")
-	    .allowedMethods("GET", "POST", "OPTIONS");
+	    .allowedMethods("*");
 	  }
 	
 }
