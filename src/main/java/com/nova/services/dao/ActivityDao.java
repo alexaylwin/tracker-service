@@ -46,7 +46,6 @@ public class ActivityDao {
 	
 	@PostConstruct
 	public void postConstruct() throws MalformedURLException {
-		System.out.println("Creds:" + credentials.getCloudantUsername() + ":" + credentials.getCloudantPassword());
 		this.client = ClientBuilder.url(new URL(CLOUDANT_URL))
 						.username(credentials.getCloudantUsername())
 						.password(credentials.getCloudantPassword())
@@ -57,7 +56,6 @@ public class ActivityDao {
 		Database db = this.client.database(CLOUDANT_DB, false);
 		com.nova.services.model.cloudant.User user = db.findByIndex("{\"selector\":{\"user_id\":1}}", com.nova.services.model.cloudant.User.class).get(0);
 
-		System.out.println(user.toString());
 		List<ActivityRecord> activityRecordList = user.getRecorded_activities().stream().map(gu -> {
 			LocalDateTime start;
 			LocalDateTime end;
@@ -66,7 +64,7 @@ public class ActivityDao {
 			return new com.nova.services.model.ActivityRecord(Integer.valueOf(gu.getId()), start, end);
 		}).collect(Collectors.toList());
 		
-		activityRecordList.stream().forEach(ca -> {System.out.println(ca.getActivityId());});
+		//activityRecordList.stream().forEach(ca -> {System.out.println(ca.getActivityId());});
 		
 		return activityRecordList;		
 		
@@ -75,7 +73,6 @@ public class ActivityDao {
 	public List<Activity> getActivities(int userid) {
 		Database db = this.client.database(CLOUDANT_DB, false);
 		com.nova.services.model.cloudant.User user = db.findByIndex("{\"selector\":{\"user_id\":1}}", com.nova.services.model.cloudant.User.class).get(0);
-		System.out.println(user.toString());
 		
 		List<Activity> activityList = user.getActivity_list().stream().map(cloudantActivity -> {
 			Long id = 0l;
@@ -96,6 +93,7 @@ public class ActivityDao {
 	}
 	
 	public boolean addActivityRecord(int userid, ActivityRecord activityRecord) {
+		System.out.println("Posting activity" + activityRecord.toString());
 		Database db = this.client.database(CLOUDANT_DB, false);
 		com.nova.services.model.cloudant.User user = db.findByIndex("{\"selector\":{\"user_id\":1}}", com.nova.services.model.cloudant.User.class).get(0);
 		com.nova.services.model.cloudant.ActivityRecord record = 
