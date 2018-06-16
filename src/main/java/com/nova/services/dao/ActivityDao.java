@@ -59,6 +59,7 @@ public class ActivityDao {
 		List<ActivityRecord> activityRecordList = user.getRecorded_activities().stream().map(gu -> {
 			LocalDateTime start;
 			LocalDateTime end;
+			System.out.println(gu.getStart_time());
 			start = LocalDateTime.parse(gu.getStart_time().trim(), dateFormatter);
 			end = LocalDateTime.parse(gu.getEnd_time(), dateFormatter);
 			return new com.nova.services.model.ActivityRecord(Integer.valueOf(gu.getId()), start, end);
@@ -93,7 +94,6 @@ public class ActivityDao {
 	}
 	
 	public boolean addActivityRecord(int userid, ActivityRecord activityRecord) {
-		System.out.println("Posting activity" + activityRecord.toString());
 		Database db = this.client.database(CLOUDANT_DB, false);
 		com.nova.services.model.cloudant.User user = db.findByIndex("{\"selector\":{\"user_id\":1}}", com.nova.services.model.cloudant.User.class).get(0);
 		com.nova.services.model.cloudant.ActivityRecord record = 
@@ -104,7 +104,7 @@ public class ActivityDao {
 					);
 		user.getRecorded_activities().add(record);
 		Response resp = db.update(user);
-		return (resp.getError().isEmpty());
+		return (resp.getError() == null || resp.getError().isEmpty());
 	}
 
 }
